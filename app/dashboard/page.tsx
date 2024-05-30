@@ -1,5 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Overview from '@/pages/Overview';
+import Repository from '@/pages/Repository';
 
 export default function Dashboard() {
   return (
@@ -17,7 +18,7 @@ export default function Dashboard() {
         <TabsContent value="upload">Change your password here.</TabsContent>
 
         <TabsContent value="repository">
-          Make changes to your account here.
+          <Repository />
         </TabsContent>
       </Tabs>
     </>
