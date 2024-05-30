@@ -1,10 +1,34 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { BarChart } from '@mui/x-charts/BarChart';
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+  BarChart,
+  Tooltip,
+  Legend,
+  Bar,
+} from 'recharts';
 
 export default function Overview() {
+  const data = [
+    { name: 'Jan ', uv: 4000, pv: 90, amt: 90 },
+    { name: 'Feb', uv: 3000, pv: 25, amt: 100 },
+    { name: 'Mar', uv: 2000, pv: 65, amt: 100 },
+    { name: 'Apr', uv: 2780, pv: 70, amt: 100 },
+    { name: 'May', uv: 1890, pv: 85, amt: 100 },
+    { name: 'Jun', uv: 2390, pv: 30, amt: 100 },
+    { name: 'Jul', uv: 3490, pv: 25, amt: 100 },
+    { name: 'Aug', uv: 1244, pv: 75, amt: 100 },
+    { name: 'Sep', uv: 1244, pv: 72, amt: 100 },
+    { name: 'Oct', uv: 1244, pv: 78, amt: 100 },
+    { name: 'Nov', uv: 1244, pv: 80, amt: 100 },
+    { name: 'Dec', uv: 1244, pv: 85, amt: 100 },
+  ];
   return (
     <>
       <div className="mt-5 space-y-8">
@@ -65,18 +89,20 @@ export default function Overview() {
             <CardHeader>
               <CardTitle>Recent Sales</CardTitle>
             </CardHeader>
-            <CardContent>
-              <BarChart
-                series={[
-                  { data: [35, 44, 24, 34] },
-                  { data: [51, 6, 49, 30] },
-                  { data: [15, 25, 30, 50] },
-                  { data: [60, 50, 15, 25] },
-                ]}
-                height={450}
-                xAxis={[{ data: ['Q1', 'Q2', 'Q3', 'Q4'], scaleType: 'band' }]}
-                margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
-              />
+            <CardContent className="pl-2">
+              <ResponsiveContainer width="100%" height={350}>
+                <BarChart
+                  data={data}
+                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                >
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="pv" fill="#ADFA1D" radius={5} />
+                  {/* <Bar dataKey="uv" fill="#82ca9d" /> */}
+                </BarChart>
+              </ResponsiveContainer>
             </CardContent>
           </Card>
           <Card x-chunk="dashboard-01-chunk-5">
