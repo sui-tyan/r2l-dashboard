@@ -2,6 +2,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -10,12 +11,13 @@ import { Label } from '@/components/ui/label';
 import { ArrowUpFromLine } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
 
 export default function Upload() {
   return (
     <>
       <div>
-        <Card className="mt-8">
+        <Card className="mt-8 pb-10">
           <CardHeader>
             <CardTitle>Upload</CardTitle>
           </CardHeader>
@@ -27,7 +29,7 @@ export default function Upload() {
                     <Label htmlFor="paper">Research Paper</Label>
                     <Input id="paper" type="file" />
                   </div>
-                  <Card className="p-10 h-[282px] flex place-content-center items-center">
+                  <Card className="p-10 h-[282px] flex place-content-center shadow-none items-center border-dashed ">
                     <div className="">
                       <ArrowUpFromLine className="mx-auto h-10 w-10" />
                       <CardDescription className="text-center mt-2">
@@ -98,6 +100,7 @@ export default function Upload() {
             </div>
           </CardContent>
         </Card>
+        <Button className="float-right mt-5">Upload</Button>
       </div>
     </>
   );

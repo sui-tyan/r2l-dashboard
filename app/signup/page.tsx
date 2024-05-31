@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 
-export default function Login() {
+export default function Signup() {
   return (
     <div className="w-full lg:grid lg:grid-cols-2 h-screen relative">
       <div className="absolute right-0 m-5 lg:m-10 font-semibold">Sign Up</div>
@@ -30,9 +30,9 @@ export default function Login() {
               height="150"
               className="mx-auto"
             />
-            <h1 className="text-3xl font-bold">Rights2LIFE Repository</h1>
+            <h1 className="text-3xl font-bold">Create an Account</h1>
             <p className="text-balance text-muted-foreground">
-              Rights2LIFE Research Repository Portal
+              Enter your email to create your account
             </p>
           </div>
           <div className="grid gap-4">
@@ -45,25 +45,8 @@ export default function Login() {
                 required
               />
             </div>
-            <div className="grid gap-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
-                <Link
-                  href="/forgot-password"
-                  className="ml-auto inline-block text-sm underline"
-                >
-                  Forgot your password?
-                </Link>
-              </div>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Password"
-                required
-              />
-            </div>
             <Button type="submit" className="w-full">
-              Login
+              Continue with Email
             </Button>
             <div className="flex w-full justify-center text-center items-center">
               <Separator className="w-1/3" />
@@ -97,11 +80,12 @@ export default function Login() {
                   d="M43.611,20.083L43.595,20L42,20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571	c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
                 ></path>
               </svg>
-              Login with Google
+              Google
             </Button>
           </div>
           <div className="text-gray-500 text-center text-sm">
-            Unauthorized Access Will Be Logged and Reported
+            By clicking continue, you agree to our Terms of Service and Privacy
+            Policy
           </div>
           <div className="pt-10 justify-center flex gap-5 w-1/4 mx-auto xl:w-full">
             <Image alt="logo" src={'/ghent.png'} width={200} height={200} />
