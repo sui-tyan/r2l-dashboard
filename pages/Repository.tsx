@@ -10,7 +10,7 @@ import { Separator } from '@/components/ui/separator';
 
 export default function Repository() {
   return (
-    <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
+    <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-1 lg:grid-cols-3">
       <div className="md:col-span-2">
         <Card x-chunk="dashboard-01-chunk-5">
           <CardHeader>
@@ -88,8 +88,8 @@ export default function Repository() {
           </CardContent>
         </Card>
       </div>
-      <div>
-        <Card x-chunk="dashboard-01-chunk-5 col-span-1">
+      <div className="md:col-span-1">
+        <Card x-chunk="dashboard-01-chunk-5" className="h-full">
           <CardHeader>
             <CardTitle>Research Title</CardTitle>
             <CardDescription>Authors</CardDescription>
