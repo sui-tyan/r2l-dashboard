@@ -1,25 +1,39 @@
 'use client';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+import { useEffect } from 'react';
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+
   return (
     <>
-      <div className="border-b-[1px] flex p-2 items-center">
-        <Popover>
-          <PopoverTrigger asChild>
-            <>
+      <div className="border-b-[1px] flex p-2 items-center gap-2">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <div>
               <Button
                 variant="outline"
                 role="combobox"
@@ -41,13 +55,45 @@ export default function DashboardLayout({
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </div>
-            </>
-          </PopoverTrigger>
-          <PopoverContent>Place content for the popover here.</PopoverContent>
-        </Popover>
-        <Button variant="ghost">Dashboard</Button>
-        <Separator className="bg-red" orientation="vertical" />
-        <Button variant="ghost">Settings</Button>
+            </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56 ml-2">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem className="cursor-pointer">
+                Settings
+                <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                Support
+                {/* <DropdownMenuShortcut>⌘K</DropdownMenuShortcut> */}
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="cursor-pointer text-red-600 font-semibold hover:!text-red-600">
+              Log out
+              <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <Link
+          className={`link rounded-sm ${
+            pathname === '/dashboard' ? 'bg-accent' : ''
+          }`}
+          href="/dashboard"
+        >
+          <Button variant="ghost">Dashboard</Button>
+        </Link>
+        <Link
+          className={`link rounded-sm ${
+            pathname === '/settings' ? 'bg-accent' : ''
+          }`}
+          href="/dashboard"
+        >
+          <Button variant="ghost">Settings</Button>
+        </Link>
       </div>
       <div className="m-5">{children}</div>
     </>
