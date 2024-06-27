@@ -9,7 +9,11 @@ import { Separator } from '@/components/ui/separator';
 export default function Login() {
   return (
     <div className="w-full lg:grid lg:grid-cols-2 h-screen relative">
-      <div className="absolute right-0 m-5 lg:m-10 font-semibold">Sign Up</div>
+      <button className="absolute right-0 m-5 lg:m-10 font-semibold z-10 ">
+        <Link href={'/signup'} className="cursor-pointer">
+          Sign Up
+        </Link>
+      </button>
       <div className="hidden lg:block lg:relative">
         <Image
           src="/bg.jpg"
@@ -62,9 +66,11 @@ export default function Login() {
                 required
               />
             </div>
-            <Button type="submit" className="w-full">
-              Login
-            </Button>
+            <Link href={'/dashboard'}>
+              <Button type="submit" className="w-full">
+                Login
+              </Button>
+            </Link>
             <div className="flex w-full justify-center text-center items-center">
               <Separator className="w-1/3" />
               <p className="text-[11px] text-gray-500 mx-1">OR CONTINUE WITH</p>
