@@ -9,6 +9,8 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { authenticate } from '../_lib/actions/authenticate';
 import { useFormState } from 'react-dom';
+import { Submit } from '@/components/submit';
+import bg from '@/public/bg.jpg';
 
 export default function Login() {
   const [errorMessage, dispatch] = useFormState(authenticate, undefined);
@@ -21,7 +23,8 @@ export default function Login() {
       </button>
       <div className="hidden lg:block lg:relative">
         <Image
-          src="/bg.jpg"
+          src={bg}
+          priority
           alt="Image"
           width="1920"
           height="1080"
@@ -75,31 +78,27 @@ export default function Login() {
                   required
                 />
               </div>
-              {/* <Link href={'/dashboard'}>
-              </Link> */}
-              <Button type="submit" className="w-full">
-                Login
-              </Button>
-              <div className="flex w-full justify-center text-center items-center">
+              <Submit label="Login" />
+              {/* <div className="flex w-full justify-center text-center items-center">
                 <Separator className="w-1/3" />
                 <p className="text-[11px] text-gray-500 mx-1">
                   OR CONTINUE WITH
                 </p>
                 <Separator className="w-1/3" />
-              </div>
+              </div> */}
             </div>
           </form>
           <div className="text-gray-500 text-center text-sm">
             Unauthorized Access Will Be Logged and Reported
           </div>
           <div className="pt-10 justify-center flex gap-5 w-1/4 mx-auto xl:w-full">
-            <Image alt="logo" src={'/ghent.png'} width={200} height={200} />
-            <Image alt="logo" src={'/uc.png'} width={200} height={200} />
+            <Image alt="logo" src={'/ghent.png'} width="200" height="200" />
+            <Image alt="logo" src={'/uc.png'} width="200" height="200" />
             <Image
               alt="logo"
               src={'/vliruos.png'}
-              width={200}
-              height={200}
+              width="200"
+              height="200"
               className="ml-5"
             />
           </div>

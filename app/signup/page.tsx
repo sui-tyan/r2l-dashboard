@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { useFormState } from 'react-dom';
 import { register } from '../_lib/actions/register';
+import bg from '@/public/bg.jpg';
 
 export default function Signup() {
   const [errorMessage, createAccount] = useFormState(register, undefined);
@@ -21,7 +22,8 @@ export default function Signup() {
       </button>
       <div className="hidden lg:block lg:relative">
         <Image
-          src="/bg.jpg"
+          src={bg}
+          priority
           alt="Image"
           width="1920"
           height="1080"
@@ -80,7 +82,7 @@ export default function Signup() {
               <Button type="submit" className="w-full">
                 Create Account
               </Button>
-              <div className="flex w-full justify-center text-center items-center">
+              {/* <div className="flex w-full justify-center text-center items-center">
                 <Separator className="w-1/3" />
                 <p className="text-[11px] text-gray-500 mx-1">
                   OR CONTINUE WITH
@@ -115,7 +117,7 @@ export default function Signup() {
                   ></path>
                 </svg>
                 Google
-              </Button>
+              </Button> */}
             </div>
           </form>
           <div className="text-gray-500 text-center text-sm">
