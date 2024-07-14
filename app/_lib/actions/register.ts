@@ -16,6 +16,7 @@ export async function register(_currentState: unknown, formData: FormData) {
     });
   } catch (error: any) {
     if (error) {
+      console.log(error.cause) //! remove this when pushing to prod
       switch (error.cause) {
         case 'Not Match':
           return "Password didn't match!";
