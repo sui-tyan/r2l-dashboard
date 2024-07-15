@@ -1,6 +1,8 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { api } from '@/lib/api';
+import { useEffect } from 'react';
 import {
   LineChart,
   Line,
@@ -13,8 +15,12 @@ import {
   Legend,
   Bar,
 } from 'recharts';
+import { getCookie } from "cookies-next"
+import { useState } from 'react';
+
 
 export default function Overview() {
+  const [numberOfPapers, setNumberOfPapers] = useState<number>(0)
   const data = [
     { name: 'Jan ', uv: 4000, pv: 90, amt: 90 },
     { name: 'Feb', uv: 3000, pv: 25, amt: 100 },
@@ -29,6 +35,18 @@ export default function Overview() {
     { name: 'Nov', uv: 1244, pv: 80, amt: 100 },
     { name: 'Dec', uv: 1244, pv: 85, amt: 100 },
   ];
+
+  useEffect(() => {
+    api.get("/research/view-all", {headers: {
+      'Authorization': `Bearer ${getCookie('token')}`
+      }
+    }).then((response) => {
+      setNumberOfPapers(response.data.length)
+    });
+  }, [])
+
+
+
   return (
     <>
       <div className="mt-5 space-y-8">
@@ -40,7 +58,7 @@ export default function Overview() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">200</div>
+              <div className="text-2xl font-bold">{numberOfPapers}</div>
               <p className="text-xs text-muted-foreground">+20.1%</p>
             </CardContent>
           </Card>

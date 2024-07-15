@@ -1,8 +1,8 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Toaster } from '@/components/ui/toaster';
-import Overview from '@/pages/Overview';
-import Repository from '@/pages/Repository';
-import Upload from '@/pages/Upload';
+import Overview from '@/app/_pages/Overview';
+import Repository from '@/app/_pages/Repository';
+import Upload from '@/app/_pages/Upload';
 
 export default function Dashboard() {
   return (
