@@ -19,9 +19,12 @@ export async function uploadResearch(_currentState: unknown, formData: FormData)
             return `${snakeCaseToSentenceCase(key)} is empty!`
         }
     }
+    const uploadResult = await api.post('/upload/research', formData, {headers: {
+      'Authorization': `Bearer ${cookies().get('token')?.value}`
+       }
+      })
 
-    console.log(formData)
-    const uploadResult = await api.post('/research', formData)
+    return uploadResult.status
   } catch (error: any) {
     if (error) {
         return error.cause;

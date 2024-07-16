@@ -13,7 +13,7 @@ export default function FormStatus({errorMessage}: FormStatusProps) {
     useEffect(() => {
         if(errorMessage) {
             toast({
-            title: 'Error',
+            title: (typeof errorMessage === 'number') ? 'Success' :'Error',
             description: errorMessage
             })
         }
