@@ -6,7 +6,10 @@ import { redirect } from 'next/navigation';
 
 export async function authenticate(_currentState: unknown, formData: FormData) {
   try {
-    const AuthRequestResult = await api.post('/auth/authenticate', formData);
+    var form = {};
+    formData.forEach((value, key) => (form as any)[key] = value);
+    
+    const AuthRequestResult = await api.post('/auth/authenticate', form);
     cookies().set('token', AuthRequestResult.data.token, {
       secure: true,
       maxAge: 60 * 60 * 24 * 7,
