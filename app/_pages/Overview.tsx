@@ -17,10 +17,12 @@ import {
 } from 'recharts';
 import { getCookie } from "cookies-next"
 import { useState } from 'react';
+import { RecentUploadType } from '../_lib/definitions';
 
 
 export default function Overview() {
   const [numberOfPapers, setNumberOfPapers] = useState<number>(0)
+  const [recentUploads, setRecentUploads] = useState<RecentUploadType[]>()
   const data = [
     { name: 'Jan ', uv: 4000, pv: 90, amt: 90 },
     { name: 'Feb', uv: 3000, pv: 25, amt: 100 },
@@ -41,6 +43,26 @@ export default function Overview() {
       'Authorization': `Bearer ${getCookie('token')}`
       }
     }).then((response) => {
+      console.log(response)
+      response.data.forEach((upload: any) => {
+         let recentUpload: RecentUploadType= {
+          'title': upload.title,
+          'authors': upload.authors,
+          'publishedDate': upload.published_date,
+          'fileUri': upload.file_uri
+         }
+
+         setRecentUploads(prev => {
+          const isDuplicate = prev?.some(upload => upload.title === recentUpload.title)
+
+          if(!isDuplicate) {
+            return [...(prev || []), recentUpload];
+          }
+
+          return prev;
+
+         })
+      })
       setNumberOfPapers(response.data.length)
     });
   }, [])
@@ -105,7 +127,7 @@ export default function Overview() {
         <div className="lg:grid lg:grid-cols-3 gap-10 space-y-8 lg:space-y-0">
           <Card x-chunk="dashboard-01-chunk-5" className="w-full col-span-2">
             <CardHeader>
-              <CardTitle>Recent Sales</CardTitle>
+              <CardTitle>Total</CardTitle>
             </CardHeader>
             <CardContent className="pl-2">
               <ResponsiveContainer width="100%" height={350}>
@@ -125,64 +147,22 @@ export default function Overview() {
           </Card>
           <Card x-chunk="dashboard-01-chunk-5">
             <CardHeader>
-              <CardTitle>Recent Sales</CardTitle>
+              <CardTitle>Recent</CardTitle>
             </CardHeader>
-            <CardContent className="grid gap-8">
-              <div className="flex items-center gap-4">
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    Research Title
-                  </p>
-                  <p className="text-sm text-muted-foreground text-ellipsis overflow-hidden">
-                    Author - Published Date
-                  </p>
+            <CardContent className="grid gap-2">
+              {recentUploads?.map((record, index) => (
+                <div className="flex items-center gap-4 border-b" key={index}>
+                  <div className="grid gap-1">
+                    <p className="text-sm font-medium leading-none">
+                      {record.title}
+                    </p>
+                    <p className="text-sm text-muted-foreground text-ellipsis overflow-hidden">
+                      {record.authors} - {record.publishedDate}
+                    </p>
+                  </div>
+                  <div className="ml-auto font-medium underline">View</div>
                 </div>
-                <div className="ml-auto font-medium underline">View</div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    Research Title
-                  </p>
-                  <p className="text-sm text-muted-foreground text-ellipsis overflow-hidden">
-                    Author - Published Date
-                  </p>
-                </div>
-                <div className="ml-auto font-medium underline">View</div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    Research Title
-                  </p>
-                  <p className="text-sm text-muted-foreground text-ellipsis overflow-hidden">
-                    Author - Published Date
-                  </p>
-                </div>
-                <div className="ml-auto font-medium underline">View</div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    Research Title
-                  </p>
-                  <p className="text-sm text-muted-foreground text-ellipsis overflow-hidden">
-                    Author - Published Date
-                  </p>
-                </div>
-                <div className="ml-auto font-medium underline">View</div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    Research Title
-                  </p>
-                  <p className="text-sm text-muted-foreground text-ellipsis overflow-hidden">
-                    Author - Published Date
-                  </p>
-                </div>
-                <div className="ml-auto font-medium underline">View</div>
-              </div>
+              ))}
             </CardContent>
           </Card>
         </div>

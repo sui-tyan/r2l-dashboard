@@ -1,3 +1,5 @@
+'use client'
+
 import {
   Card,
   CardHeader,
@@ -7,8 +9,41 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import React, { useEffect, useState } from 'react';
+import { getCookie } from 'cookies-next';
+import { api } from '@/lib/api';
+import { RecentUploadType } from '../_lib/definitions';
 
 export default function Repository() {
+  const [recentUploads, setRecentUploads] = useState<RecentUploadType[]>()
+
+  useEffect(() => {
+    api.get("/research/view-all", {headers: {
+      'Authorization': `Bearer ${getCookie('token')}`
+      }
+    }).then((response) => {
+      console.log(response)
+      response.data.forEach((upload: any) => {
+         let recentUpload: RecentUploadType= {
+          'title': upload.title,
+          'authors': upload.authors,
+          'publishedDate': upload.published_date,
+          'fileUri': upload.file_uri
+         }
+
+         setRecentUploads(prev => {
+          const isDuplicate = prev?.some(upload => upload.title === recentUpload.title)
+
+          if(!isDuplicate) {
+            return [...(prev || []), recentUpload];
+          }
+
+          return prev;
+
+         })
+      })
+    });
+  }, [])
   return (
     <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-1 lg:grid-cols-3">
       <div className="md:col-span-2">
@@ -30,61 +65,22 @@ export default function Repository() {
             </div>
           </CardHeader>
           <CardContent className="grid gap-2">
-            <div className="flex items-center gap-4">
-              <div className="grid gap-1">
-                <p className="text-sm font-medium leading-none">
-                  Research Title
-                </p>
-                <p className="text-sm text-muted-foreground text-ellipsis overflow-hidden">
-                  Author - Published Date
-                </p>
+
+            {recentUploads?.map((record, index) => (
+              <React.Fragment key={`${index}${record.title}repository`}>
+              <div className="flex items-center gap-4" >
+                <div className="grid gap-1">
+                  <p className="text-sm font-medium leading-none">
+                    {record.title}
+                  </p>
+                  <p className="text-sm text-muted-foreground text-ellipsis overflow-hidden">
+                    {record.authors} - {record.publishedDate}
+                  </p>
+                </div>
               </div>
-            </div>
-            <Separator />
-            <div className="flex items-center gap-4">
-              <div className="grid gap-1">
-                <p className="text-sm font-medium leading-none">
-                  Research Title
-                </p>
-                <p className="text-sm text-muted-foreground text-ellipsis overflow-hidden">
-                  Author - Published Date
-                </p>
-              </div>
-            </div>
-            <Separator />
-            <div className="flex items-center gap-4">
-              <div className="grid gap-1">
-                <p className="text-sm font-medium leading-none">
-                  Research Title
-                </p>
-                <p className="text-sm text-muted-foreground text-ellipsis overflow-hidden">
-                  Author - Published Date
-                </p>
-              </div>
-            </div>
-            <Separator />
-            <div className="flex items-center gap-4">
-              <div className="grid gap-1">
-                <p className="text-sm font-medium leading-none">
-                  Research Title
-                </p>
-                <p className="text-sm text-muted-foreground text-ellipsis overflow-hidden">
-                  Author - Published Date
-                </p>
-              </div>
-            </div>
-            <Separator />
-            <div className="flex items-center gap-4">
-              <div className="grid gap-1">
-                <p className="text-sm font-medium leading-none">
-                  Research Title
-                </p>
-                <p className="text-sm text-muted-foreground text-ellipsis overflow-hidden">
-                  Author - Published Date
-                </p>
-              </div>
-            </div>
-            <Separator />
+              <Separator />
+              </React.Fragment>
+            ))}
           </CardContent>
         </Card>
       </div>
