@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import {
   Card,
@@ -19,9 +19,16 @@ import { uploadResearch } from '@/app/_lib/actions/uploadResearch';
 import { useToast } from '@/components/ui/use-toast';
 import { useEffect } from 'react';
 import FormStatus from '@/components/FormStatus';
+import { FormStateSchema } from '../_lib/definitions';
 
 export default function Upload() {
-  const [errorMessage, dispatch] = useFormState(uploadResearch, undefined);
+  const [formState, dispatch] = useFormState<FormStateSchema, FormData>(
+    uploadResearch as any,
+    {
+      type: 'none',
+      message: '',
+    }
+  );
   return (
     <>
       <div>
@@ -30,13 +37,18 @@ export default function Upload() {
             <CardTitle>Upload</CardTitle>
           </CardHeader>
           <CardContent>
-            <form action={dispatch}>
+            <form action={dispatch} id="uploadResearchForm">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mx-5">
                 <div className="md:col-span-1">
                   <div className="grid w-full max-w-sm items-center gap-1.5 space-y-2">
                     <div>
                       <Label htmlFor="manuscript">Research Paper</Label>
-                      <Input id="manuscript" type="file" name='manuscript' accept='application/pdf' />
+                      <Input
+                        id="manuscript"
+                        type="file"
+                        name="manuscript"
+                        accept="application/pdf"
+                      />
                     </div>
                     <Card className="p-10 h-[282px] flex place-content-center shadow-none items-center border-dashed ">
                       <div className="">
@@ -55,7 +67,7 @@ export default function Upload() {
                       <Label htmlFor="research_title">Title</Label>
                       <Input
                         id="research_title"
-                        name='research_title'
+                        name="research_title"
                         type="text"
                         placeholder="Enter title here"
                       />
@@ -113,7 +125,7 @@ export default function Upload() {
                   </div>
                 </div>
               </div>
-              <FormStatus errorMessage={errorMessage} />
+              <FormStatus type={formState.type} message={formState.message} />
             </form>
           </CardContent>
         </Card>
