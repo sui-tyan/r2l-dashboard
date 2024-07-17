@@ -5,29 +5,34 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { snakeCaseToSentenceCase } from '../stringUtils';
 
-export async function uploadResearch(_currentState: unknown, formData: FormData) {
+export async function uploadResearch(
+  _currentState: unknown,
+  formData: FormData
+) {
   try {
+    const fileInput = formData.get('manuscript');
 
-    const fileInput = formData.get("manuscript")
-
-    if(fileInput instanceof File) {
-        if(fileInput.size === 0) return "Manuscript is empty!";
+    if (fileInput instanceof File) {
+      if (fileInput.size === 0) return 'Manuscript is empty!';
     }
 
-    for(const [key, value] of formData.entries()) {
-        if(!value) {
-            return `${snakeCaseToSentenceCase(key)} is empty!`
-        }
+    for (const [key, value] of formData.entries()) {
+      if (!value) {
+        return `${snakeCaseToSentenceCase(key)} is empty!`;
+      }
     }
-    const uploadResult = await api.post('/upload/research', formData, {headers: {
-      'Authorization': `Bearer ${cookies().get('token')?.value}`
-       }
-      })
+    const uploadResult = await api.post('/upload/research', formData, {
+      headers: {
+        Authorization: `Bearer ${cookies().get('token')?.value}`,
+      },
+    });
 
-    return uploadResult.status
+    if (uploadResult.status === 200) {
+      return { type: 'success', message: 'Uploaded' };
+    }
   } catch (error: any) {
     if (error) {
-        return error.cause;
+      return { type: 'error', message: error.cause };
     }
     throw error;
   }
