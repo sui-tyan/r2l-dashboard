@@ -9,14 +9,17 @@ export async function register(_currentState: unknown, formData: FormData) {
     if (formData.get('password') !== formData.get('confirm_password')) {
       throw new Error("Password didn't match!", { cause: 'Not Match' });
     }
-    const AuthRequestResult = await api.post('/account/create-user', formData);
+
+    var form = {};
+    formData.forEach((value, key) => ((form as any)[key] = value));
+
+    const AuthRequestResult = await api.post('/account/create-user', form);
     cookies().set('token', AuthRequestResult.data.token, {
       secure: true,
       maxAge: 60 * 60 * 24 * 7,
     });
   } catch (error: any) {
     if (error) {
-      console.log(error.cause) //! remove this when pushing to prod
       switch (error.cause) {
         case 'Not Match':
           return "Password didn't match!";
