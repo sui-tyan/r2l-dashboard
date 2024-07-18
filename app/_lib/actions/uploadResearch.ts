@@ -27,11 +27,10 @@ export async function uploadResearch(
       },
     });
 
-    if (uploadResult.status === 200) {
-      return { type: 'success', message: 'Uploaded' };
-    }
+    return { type: 'success', message: 'Uploaded' };
   } catch (error: any) {
     if (error) {
+      console.log(error);
       return { type: 'error', message: error.cause };
     }
     throw error;

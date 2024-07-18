@@ -8,13 +8,14 @@ export default function FormStatus({ type, message }: FormStateSchema) {
   const status = useFormStatus();
   const { toast } = useToast();
   useEffect(() => {
-    if (type) {
-      toast({
-        title: type === 'success' ? 'Success' : 'Error',
-        description: message,
-      });
+    if (!(type === 'none')) {
+      if (type) {
+        toast({
+          title: type === 'success' ? 'Success' : 'Error',
+          description: message,
+        });
+      }
     }
-    console.log(status);
   }, [status]);
   return (
     <Button
