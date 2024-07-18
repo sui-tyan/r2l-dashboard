@@ -15,14 +15,13 @@ import {
   Legend,
   Bar,
 } from 'recharts';
-import { getCookie } from "cookies-next"
+import { getCookie } from 'cookies-next';
 import { useState } from 'react';
 import { RecentUploadType } from '../_lib/definitions';
 
-
 export default function Overview() {
-  const [numberOfPapers, setNumberOfPapers] = useState<number>(0)
-  const [recentUploads, setRecentUploads] = useState<RecentUploadType[]>()
+  const [numberOfPapers, setNumberOfPapers] = useState<number>(0);
+  const [recentUploads, setRecentUploads] = useState<RecentUploadType[]>();
   const data = [
     { name: 'Jan ', uv: 4000, pv: 90, amt: 90 },
     { name: 'Feb', uv: 3000, pv: 25, amt: 100 },
@@ -39,35 +38,36 @@ export default function Overview() {
   ];
 
   useEffect(() => {
-    api.get("/research/view-all", {headers: {
-      'Authorization': `Bearer ${getCookie('token')}`
-      }
-    }).then((response) => {
-      console.log(response)
-      response.data.forEach((upload: any) => {
-         let recentUpload: RecentUploadType= {
-          'title': upload.title,
-          'authors': upload.authors,
-          'publishedDate': upload.published_date,
-          'fileUri': upload.file_uri
-         }
-
-         setRecentUploads(prev => {
-          const isDuplicate = prev?.some(upload => upload.title === recentUpload.title)
-
-          if(!isDuplicate) {
-            return [...(prev || []), recentUpload];
-          }
-
-          return prev;
-
-         })
+    api
+      .get('/research/view-all', {
+        headers: {
+          Authorization: `Bearer ${getCookie('token')}`,
+        },
       })
-      setNumberOfPapers(response.data.length)
-    });
-  }, [])
+      .then((response) => {
+        response.data.forEach((upload: any) => {
+          let recentUpload: RecentUploadType = {
+            title: upload.title,
+            authors: upload.authors,
+            publishedDate: upload.published_date,
+            fileUri: upload.file_uri,
+          };
 
+          setRecentUploads((prev) => {
+            const isDuplicate = prev?.some(
+              (upload) => upload.title === recentUpload.title
+            );
 
+            if (!isDuplicate) {
+              return [...(prev || []), recentUpload];
+            }
+
+            return prev;
+          });
+        });
+        setNumberOfPapers(response.data.length);
+      });
+  }, []);
 
   return (
     <>
