@@ -17,9 +17,9 @@ import { Button } from '@/components/ui/button';
 import { useFormState, useFormStatus } from 'react-dom';
 import { uploadResearch } from '@/app/_lib/actions/uploadResearch';
 import { useToast } from '@/components/ui/use-toast';
-import { useEffect } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import FormStatus from '@/components/FormStatus';
-import { FormStateSchema } from '../_lib/definitions';
+import { FormStateSchema, UploadFormSchema } from '../_lib/definitions';
 
 export default function Upload() {
   const [formState, dispatch] = useFormState<FormStateSchema, FormData>(
@@ -29,6 +29,40 @@ export default function Upload() {
       message: '',
     }
   );
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const [formValues, setFormValues] = useState<UploadFormSchema>({
+    research_title: '',
+    research_author: '',
+    research_published_date: '',
+    research_publisher: '',
+    research_institution: '',
+    research_abstract: '',
+  });
+
+  useEffect(() => {
+    if (formState.type === 'success') {
+      setFormValues({
+        research_title: '',
+        research_author: '',
+        research_published_date: '',
+        research_publisher: '',
+        research_institution: '',
+        research_abstract: '',
+      });
+
+      inputRef.current && (inputRef.current.value = '');
+    }
+  }, [formState.type]);
+
+  function InputOnChange(e: ChangeEvent<HTMLInputElement>) {
+    setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }
+
+  function TextAreaOnChange(e: ChangeEvent<HTMLTextAreaElement>) {
+    setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }
   return (
     <>
       <div>
@@ -48,6 +82,7 @@ export default function Upload() {
                         type="file"
                         name="manuscript"
                         accept="application/pdf"
+                        ref={inputRef}
                       />
                     </div>
                     <Card className="p-10 h-[282px] flex place-content-center shadow-none items-center border-dashed ">
@@ -69,7 +104,9 @@ export default function Upload() {
                         id="research_title"
                         name="research_title"
                         type="text"
+                        value={formValues.research_title}
                         placeholder="Enter title here"
+                        onChange={InputOnChange}
                       />
                     </div>
                     <div>
@@ -78,7 +115,9 @@ export default function Upload() {
                         id="research_author"
                         name="research_author"
                         type="text"
+                        value={formValues.research_author}
                         placeholder="e.g. John Smith, Juan de La Cruz"
+                        onChange={InputOnChange}
                       />
                     </div>
                     <div>
@@ -87,7 +126,9 @@ export default function Upload() {
                         id="research_publisher"
                         name="research_publisher"
                         type="text"
+                        value={formValues.research_publisher}
                         placeholder="Enter publisher here"
+                        onChange={InputOnChange}
                       />
                     </div>
                     <div>
@@ -96,7 +137,9 @@ export default function Upload() {
                         id="research_institution"
                         name="research_institution"
                         type="text"
+                        value={formValues.research_institution}
                         placeholder="Enter institution here"
+                        onChange={InputOnChange}
                       />
                     </div>
                     <div>
@@ -107,7 +150,9 @@ export default function Upload() {
                         id="research_published_date"
                         name="research_published_date"
                         type="text"
+                        value={formValues.research_published_date}
                         placeholder="Enter published date"
+                        onChange={InputOnChange}
                       />
                     </div>
                   </div>
@@ -115,12 +160,14 @@ export default function Upload() {
                 </div>
                 <div className="w-full md:col-span-2 lg:ml-5 mt-5 lg:mt-0">
                   <div className="grid w-full gap-1.5">
-                    <Label htmlFor="message">Abstract</Label>
+                    <Label htmlFor="research_abstract">Abstract</Label>
                     <Textarea
                       className="h-[200px] lg:h-[335px]"
-                      placeholder="Type your message here."
-                      id="message"
-                      name="message"
+                      placeholder="Abstract here..."
+                      id="research_abstract"
+                      value={formValues.research_abstract}
+                      name="research_abstract"
+                      onChange={TextAreaOnChange}
                     />
                   </div>
                 </div>
