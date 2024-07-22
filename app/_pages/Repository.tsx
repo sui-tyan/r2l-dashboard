@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import {
   Card,
@@ -12,38 +12,53 @@ import { Separator } from '@/components/ui/separator';
 import React, { useEffect, useState } from 'react';
 import { getCookie } from 'cookies-next';
 import { api } from '@/lib/api';
-import { RecentUploadType } from '../_lib/definitions';
+import { CurrentSelectedResearch, RecentUploadType } from '../_lib/definitions';
 
 export default function Repository() {
-  const [recentUploads, setRecentUploads] = useState<RecentUploadType[]>()
+  const [recentUploads, setRecentUploads] =
+    useState<CurrentSelectedResearch[]>();
+  const [currentSelected, setCurrentSelected] =
+    useState<CurrentSelectedResearch>();
 
   useEffect(() => {
-    api.get("/research/view-all", {headers: {
-      'Authorization': `Bearer ${getCookie('token')}`
-      }
-    }).then((response) => {
-      console.log(response)
-      response.data.forEach((upload: any) => {
-         let recentUpload: RecentUploadType= {
-          'title': upload.title,
-          'authors': upload.authors,
-          'publishedDate': upload.published_date,
-          'fileUri': upload.file_uri
-         }
-
-         setRecentUploads(prev => {
-          const isDuplicate = prev?.some(upload => upload.title === recentUpload.title)
-
-          if(!isDuplicate) {
-            return [...(prev || []), recentUpload];
-          }
-
-          return prev;
-
-         })
+    api
+      .get('/research/view-all', {
+        headers: {
+          Authorization: `Bearer ${getCookie('token')}`,
+        },
       })
-    });
-  }, [])
+      .then((response) => {
+        response.data.forEach((upload: any) => {
+          console.log(upload);
+          let recentUpload: CurrentSelectedResearch = {
+            research_title: upload.title,
+            research_author: upload.authors,
+            research_published_date: upload.published_date,
+            research_publisher: upload.publisher,
+            research_institution: upload.institution,
+            research_abstract: upload.abstract,
+            file_uri: upload.file_uri,
+          };
+
+          setRecentUploads((prev) => {
+            const isDuplicate = prev?.some(
+              (upload) => upload.research_title === recentUpload.research_title
+            );
+
+            if (!isDuplicate) {
+              return [...(prev || []), recentUpload];
+            }
+
+            return prev;
+          });
+        });
+      });
+  }, []);
+
+  function selectResearch(research: CurrentSelectedResearch) {
+    setCurrentSelected(research);
+  }
+
   return (
     <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-1 lg:grid-cols-3">
       <div className="md:col-span-2">
@@ -65,44 +80,54 @@ export default function Repository() {
             </div>
           </CardHeader>
           <CardContent className="grid gap-2">
-
             {recentUploads?.map((record, index) => (
-              <React.Fragment key={`${index}${record.title}repository`}>
-              <div className="flex items-center gap-4" >
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    {record.title}
-                  </p>
-                  <p className="text-sm text-muted-foreground text-ellipsis overflow-hidden">
-                    {record.authors} - {record.publishedDate}
-                  </p>
+              <React.Fragment
+                key={`${index}${record.research_title}repository`}
+              >
+                <div
+                  className="flex items-center gap-4 cursor-pointer"
+                  onClick={() => {
+                    selectResearch(record);
+                  }}
+                >
+                  <div className="grid gap-1">
+                    <p className="text-sm font-medium leading-none">
+                      {record.research_title}
+                    </p>
+                    <p className="text-sm text-muted-foreground text-ellipsis overflow-hidden">
+                      {record.research_author} -{' '}
+                      {record.research_published_date}
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <Separator />
+                <Separator />
               </React.Fragment>
             ))}
           </CardContent>
         </Card>
       </div>
-      <div className="md:col-span-1">
-        <Card x-chunk="dashboard-01-chunk-5" className="h-full">
-          <CardHeader>
-            <CardTitle>Research Title</CardTitle>
-            <CardDescription>Authors</CardDescription>
-            <CardDescription>
-              Publisher | Published Date | Institution
-            </CardDescription>
-          </CardHeader>
+      {currentSelected && (
+        <div className="md:col-span-1">
+          <Card x-chunk="dashboard-01-chunk-5" className="h-full">
+            <CardHeader>
+              <CardTitle>{currentSelected.research_title}</CardTitle>
+              <CardDescription>
+                {currentSelected.research_author}
+              </CardDescription>
+              <CardDescription>
+                {currentSelected.research_publisher} |{' '}
+                {currentSelected.research_published_date} |{' '}
+                {currentSelected.research_institution}
+              </CardDescription>
+            </CardHeader>
 
-          <CardContent>
-            <CardTitle className="mb-2">Abstract</CardTitle>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus odio
-            incidunt saepe soluta possimus, tempore ipsam minima nulla delectus
-            nemo vitae, suscipit pariatur cum quaerat, eveniet nobis hic
-            nesciunt ut?
-          </CardContent>
-        </Card>
-      </div>
+            <CardContent>
+              <CardTitle className="mb-2">Abstract</CardTitle>
+              {currentSelected.research_abstract}
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }
