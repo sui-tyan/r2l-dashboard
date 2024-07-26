@@ -16,7 +16,7 @@ export default function FormStatus({ type, message }: FormStateSchema) {
         });
       }
     }
-  }, [status]);
+  }, [status, message, toast, type]);
   return (
     <Button
       type="submit"

@@ -11,6 +11,15 @@ import { authenticate } from '../_lib/actions/authenticate';
 import { useFormState } from 'react-dom';
 import { Submit } from '@/components/submit';
 import bg from '@/public/bg.jpg';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import ForgotPassword from '@/components/ForgotPassword';
 
 export default function Login() {
   const [errorMessage, dispatch] = useFormState(authenticate, undefined);
@@ -63,12 +72,7 @@ export default function Login() {
               <div className="grid gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
-                  <Link
-                    href="/forgot-password"
-                    className="ml-auto inline-block text-sm underline"
-                  >
-                    Forgot your password?
-                  </Link>
+                  <ForgotPassword />
                 </div>
                 <Input
                   id="password"

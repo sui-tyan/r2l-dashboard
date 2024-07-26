@@ -33,3 +33,8 @@ export type CurrentSelectedResearch = {
   research_abstract: string;
   file_uri: string;
 };
+
+export type ResetPasswordSchema = {
+  'new-password': string;
+  'retype-password': string;
+};
