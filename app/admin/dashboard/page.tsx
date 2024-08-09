@@ -7,7 +7,7 @@ import Upload from '@/app/_pages/Upload';
 export default function Dashboard() {
   return (
     <>
-    <Toaster />
+      <Toaster />
       <h1 className="font-bold text-2xl mb-3">Dashboard</h1>
       <Tabs defaultValue="overview" className="">
         <TabsList className="bg-[#F4F4F5]">
@@ -21,7 +21,6 @@ export default function Dashboard() {
         <TabsContent value="upload">
           <Upload />
         </TabsContent>
-
         <TabsContent value="repository">
           <Repository />
         </TabsContent>

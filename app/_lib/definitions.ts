@@ -38,3 +38,15 @@ export type ResetPasswordSchema = {
   'new-password': string;
   'retype-password': string;
 };
+
+export type SessionObj = {
+  account_id: string;
+  role: string;
+};
+
+export type RequestPasswordForm = {
+  token: string;
+  'new-password': string;
+  'retype-password': string;
+  email: string;
+};

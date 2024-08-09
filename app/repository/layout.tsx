@@ -12,15 +12,22 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { deleteCookie } from 'cookies-next';
 
-export default function DashboardLayout({
+export default function RepositoryLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  function logout() {
+    deleteCookie('token');
+    router.push('/login');
+  }
 
   return (
     <>
@@ -57,38 +64,29 @@ export default function DashboardLayout({
             <DropdownMenuGroup>
               <DropdownMenuItem className="cursor-pointer">
                 Settings
-                <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer">
                 Support
-                {/* <DropdownMenuShortcut>⌘K</DropdownMenuShortcut> */}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <Link href={'/login'}>
-              <DropdownMenuItem className="cursor-pointer text-red-600 font-semibold hover:!text-red-600">
-                Log out
-                <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-              </DropdownMenuItem>
-            </Link>
+            <DropdownMenuItem
+              className="cursor-pointer text-red-600 font-semibold hover:!text-red-600"
+              onClick={logout}
+            >
+              Log out
+              <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 
         <Link
           className={`link rounded-sm ${
-            pathname === '/dashboard' ? 'bg-accent' : ''
+            pathname === '/repository' ? 'bg-accent' : ''
           }`}
-          href="/dashboard"
+          href="/repository"
         >
-          <Button variant="ghost">Dashboard</Button>
-        </Link>
-        <Link
-          className={`link rounded-sm ${
-            pathname === '/settings' ? 'bg-accent' : ''
-          }`}
-          href="/dashboard"
-        >
-          <Button variant="ghost">Settings</Button>
+          <Button variant="ghost">Repository</Button>
         </Link>
       </div>
       <div className="m-5">{children}</div>

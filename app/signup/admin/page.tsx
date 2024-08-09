@@ -6,28 +6,26 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
-import { authenticate } from '../_lib/actions/authenticate';
 import { useFormState } from 'react-dom';
-import { Submit } from '@/components/submit';
 import bg from '@/public/bg.jpg';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import ForgotPassword from '@/components/ForgotPassword';
+import { Submit } from '@/components/submit';
+import { requestAuthToken } from '@/app/_lib/actions/requestAuthToken';
 
-export default function Login() {
-  const [errorMessage, dispatch] = useFormState(authenticate, undefined);
+export default function AdminRequest({
+  params,
+}: {
+  params: { token: string };
+}) {
+  const [errorMessage, createAccount] = useFormState(
+    requestAuthToken,
+    undefined
+  );
+
   return (
     <div className="w-full lg:grid lg:grid-cols-2 h-screen relative">
       <button className="absolute right-0 m-5 lg:m-10 font-semibold z-10 ">
-        <Link href={'/signup'} className="cursor-pointer">
-          Sign Up
+        <Link href={'/login'} className="cursor-pointer">
+          Log In
         </Link>
       </button>
       <div className="hidden lg:block lg:relative">
@@ -51,12 +49,12 @@ export default function Login() {
               height="150"
               className="mx-auto"
             />
-            <h1 className="text-3xl font-bold">Rights2LIFE Repository</h1>
+            <h1 className="text-3xl font-bold">Request an Account</h1>
             <p className="text-balance text-muted-foreground">
-              Rights2LIFE Research Repository Portal
+              Request an authorization token from an admin.
             </p>
           </div>
-          <form action={dispatch}>
+          <form action={createAccount}>
             <div className="text-center text-red-500">
               {errorMessage && <p>{errorMessage}</p>}
             </div>
@@ -72,39 +70,31 @@ export default function Login() {
                 />
               </div>
               <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <ForgotPassword />
-                </div>
+                <Label htmlFor="full_name">Full Name</Label>
                 <Input
-                  id="password"
-                  type="password"
-                  name="password"
-                  placeholder="Password"
+                  id="full_name"
+                  type="text"
+                  name="full_name"
+                  placeholder="Enter full name here"
+                  value={params.token}
                   required
                 />
               </div>
-              <Submit label="Login" className="w-full" />
-              {/* <div className="flex w-full justify-center text-center items-center">
-                <Separator className="w-1/3" />
-                <p className="text-[11px] text-gray-500 mx-1">
-                  OR CONTINUE WITH
-                </p>
-                <Separator className="w-1/3" />
-              </div> */}
+              <Submit label="Request an Authorization Token" />
             </div>
           </form>
           <div className="text-gray-500 text-center text-sm">
-            Unauthorized Access Will Be Logged and Reported
+            Every request is carefully monitored. Unauthorized Access will be
+            prosecuted.
           </div>
           <div className="pt-10 justify-center flex gap-5 w-1/4 mx-auto xl:w-full">
-            <Image alt="logo" src={'/ghent.png'} width="200" height="200" />
-            <Image alt="logo" src={'/uc.png'} width="200" height="200" />
+            <Image alt="logo" src={'/ghent.png'} width={200} height={200} />
+            <Image alt="logo" src={'/uc.png'} width={200} height={200} />
             <Image
               alt="logo"
               src={'/vliruos.png'}
-              width="200"
-              height="200"
+              width={200}
+              height={200}
               className="ml-5"
             />
           </div>

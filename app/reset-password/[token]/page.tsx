@@ -56,6 +56,12 @@ export default function ResetPassword({
       <form action={dispatch}>
         <CardContent className="grid gap-4">
           <div className="grid gap-2">
+            <Input
+              name="token"
+              value={params.token}
+              className="hidden"
+              readOnly
+            />
             <Label htmlFor="new-password">New Password</Label>
             <Input
               id="new-password"
